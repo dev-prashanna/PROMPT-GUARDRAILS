@@ -1,0 +1,70 @@
+deployment:
+  model_path: "checkpoints/best"
+  merged_model_path: "deployment/merged_model"
+
+  gates:
+    gate_1_input_scanning:
+      name: "Input Scanner"
+      description: "Scans user input for prompt injection and jailbreak attempts"
+      model: "deberta-v3-firewall"
+      threshold: 0.85
+      action_on_detect: "block"
+      latency_budget_ms: 50
+      enabled: true
+
+    gate_2_rag_scanning:
+      name: "RAG/Document Scanner"
+      description: "Scans retrieved documents and RAG context for embedded injections"
+      model: "deberta-v3-firewall"
+      threshold: 0.75
+      action_on_detect: "strip_and_flag"
+      latency_budget_ms: 100
+      enabled: true
+
+    gate_3_output_scanning:
+      name: "Output Scanner"
+      description: "Scans LLM output for leaked instructions or unsafe content"
+      model: "deberta-v3-firewall"
+      threshold: 0.80
+      action_on_detect: "block"
+      latency_budget_ms: 50
+      enabled: true
+
+  pipeline:
+    overall_timeout_ms: 500
+    fallback_action: "block"
+    log_all_decisions: true
+    metrics_enabled: true
+    metrics_port: 9090
+
+  serving:
+    framework: "fastapi"
+    host: "0.0.0.0"
+    port: 8000
+    workers: 1
+    model_loading:
+      device: "cuda"
+      torch_dtype: "float16"
+      low_cpu_mem_usage: true
+    batching:
+      enabled: true
+      max_batch_size: 16
+      max_wait_ms: 10
+
+  huggingface_hub:
+    enabled: true
+    repo_id: ""
+    private: true
+
+  monitoring:
+    enabled: true
+    log_requests: true
+    log_predictions: true
+    prometheus_enabled: true
+
+  # RTX 4060 (8GB VRAM) settings
+  gpu_optimization:
+    max_batch_size: 16
+    use_gradient_checkpointing: true
+    mixed_precision: "fp16"
+    max_sequence_length: 256

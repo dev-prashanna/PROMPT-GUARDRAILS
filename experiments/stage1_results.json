@@ -1,0 +1,114 @@
+{
+  "training_log": [
+    {
+      "epoch": 1,
+      "train_loss": 1.1006802280743917,
+      "val_loss": 1.0428884426752727,
+      "macro_f1": 0.5555555555555555,
+      "accuracy": 0.8333333333333334
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.766239415605863,
+      "val_loss": 0.24356487890084585,
+      "macro_f1": 0.8611111111111112,
+      "accuracy": 0.9333333333333333
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.3699390605092049,
+      "val_loss": 0.12484166969855627,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.20561043980220953,
+      "val_loss": 0.10691817452510198,
+      "macro_f1": 0.8666666666666667,
+      "accuracy": 0.9333333333333333
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.14209387856535613,
+      "val_loss": 0.1667124138834576,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.13523203980488083,
+      "val_loss": 0.053681511292234065,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.0751656176832815,
+      "val_loss": 0.05772794547180335,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0906135537661612,
+      "val_loss": 0.03308297331289699,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.06908227796666325,
+      "val_loss": 0.016613627100984255,
+      "macro_f1": 1.0,
+      "accuracy": 1.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.08513542033421496,
+      "val_loss": 0.014612913690507412,
+      "macro_f1": 1.0,
+      "accuracy": 1.0
+    }
+  ],
+  "test_metrics": {
+    "macro_f1": 0.8666666666666667,
+    "weighted_f1": 0.9333333333333333,
+    "accuracy": 0.9333333333333333,
+    "safe_precision": 1.0,
+    "safe_recall": 1.0,
+    "safe_f1": 1.0,
+    "safe_support": 20,
+    "prompt_injection_precision": 0.8,
+    "prompt_injection_recall": 0.8,
+    "prompt_injection_f1": 0.8,
+    "prompt_injection_support": 5,
+    "jailbreak_precision": 0.8,
+    "jailbreak_recall": 0.8,
+    "jailbreak_f1": 0.8,
+    "jailbreak_support": 5,
+    "cm_safe_vs_safe": 20,
+    "cm_safe_vs_prompt_injection": 0,
+    "cm_safe_vs_jailbreak": 0,
+    "cm_prompt_injection_vs_safe": 0,
+    "cm_prompt_injection_vs_prompt_injection": 4,
+    "cm_prompt_injection_vs_jailbreak": 1,
+    "cm_jailbreak_vs_safe": 0,
+    "cm_jailbreak_vs_prompt_injection": 1,
+    "cm_jailbreak_vs_jailbreak": 4,
+    "macro_precision": 0.8666666666666667,
+    "macro_recall": 0.8666666666666667,
+    "eval_loss": 0.4165991166606545
+  },
+  "config": {
+    "model": "microsoft/deberta-v3-base",
+    "epochs": 10,
+    "batch_size": 8,
+    "lr": 2e-05,
+    "max_length": 256,
+    "device": "cuda",
+    "train_samples": 234,
+    "val_samples": 30,
+    "test_samples": 30
+  }
+}

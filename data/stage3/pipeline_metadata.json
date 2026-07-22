@@ -1,0 +1,141 @@
+{
+  "pipeline": "stage3_multi_source_aggregation",
+  "stats": {
+    "aggregation": {
+      "total_samples": 44915,
+      "label_distribution": {
+        "0": 44764,
+        "2": 116,
+        "1": 35
+      },
+      "source_distribution": {
+        "Anthropic/hh-rlhf": 15000,
+        "tatsu-lab/alpaca": 15000,
+        "Open-Orca/OpenOrca": 14623,
+        "local_injection_data": 292
+      }
+    },
+    "cleaning": {
+      "before": 44915,
+      "after": 41381,
+      "removed": 3534
+    },
+    "balancing": {
+      "before": {
+        "0": 41246,
+        "2": 104,
+        "1": 31
+      },
+      "after": {
+        "0": 346,
+        "2": 104,
+        "1": 31
+      },
+      "strategy": "hybrid"
+    },
+    "final": {
+      "train": {
+        "size": 384,
+        "label_distribution": {
+          "0": 276,
+          "2": 83,
+          "1": 25
+        }
+      },
+      "val": {
+        "size": 48,
+        "label_distribution": {
+          "0": 35,
+          "2": 10,
+          "1": 3
+        }
+      },
+      "test": {
+        "size": 49,
+        "label_distribution": {
+          "0": 35,
+          "2": 11,
+          "1": 3
+        }
+      }
+    }
+  },
+  "config": {
+    "sources": [
+      {
+        "name": "Anthropic/hh-rlhf",
+        "type": "huggingface",
+        "split": "train",
+        "text_column": "chosen",
+        "label_strategy": "inference",
+        "max_samples": 15000
+      },
+      {
+        "name": "lmsys/toxic-chat",
+        "type": "huggingface",
+        "split": "train",
+        "text_column": "user_input",
+        "label_strategy": "toxic_threshold",
+        "threshold": 0.5,
+        "max_samples": 15000
+      },
+      {
+        "name": "Open-Orca/OpenOrca",
+        "type": "huggingface",
+        "split": "train",
+        "text_column": "question",
+        "label_strategy": "fixed",
+        "fixed_label": 0,
+        "max_samples": 15000
+      },
+      {
+        "name": "tatsu-lab/alpaca",
+        "type": "huggingface",
+        "split": "train",
+        "text_column": "instruction",
+        "label_strategy": "fixed",
+        "fixed_label": 0,
+        "max_samples": 15000
+      },
+      {
+        "name": "local_injection_data",
+        "type": "local",
+        "path": "data/raw/raw_merged.parquet",
+        "text_column": "text",
+        "label_strategy": "preserve"
+      }
+    ],
+    "class_balancing": {
+      "strategy": "hybrid",
+      "target_ratio": 0.3,
+      "target_minority_ratio": 0.3,
+      "oversample_factor": 3
+    },
+    "cleaning": {
+      "min_token_length": 5,
+      "max_token_length": 512,
+      "min_text_length": 10,
+      "max_special_char_ratio": 0.5,
+      "near_duplicate_detection": true,
+      "near_duplicate_threshold": 0.85,
+      "outlier_z_threshold": 3.0
+    },
+    "splits": {
+      "train_ratio": 0.8,
+      "val_ratio": 0.1,
+      "test_ratio": 0.1,
+      "random_seed": 42
+    }
+  },
+  "label_map": {
+    "safe": 0,
+    "prompt_injection": 1,
+    "jailbreak": 2
+  },
+  "inverse_label_map": {
+    "0": "safe",
+    "1": "prompt_injection",
+    "2": "jailbreak"
+  },
+  "sha256": "3f5fd86d18501a76961923f9afc97efaeda7bca169214965700a9b0b2c117bc3"
+}

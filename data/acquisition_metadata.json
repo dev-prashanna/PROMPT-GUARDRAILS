@@ -1,0 +1,28 @@
+{
+  "total_samples": 25264,
+  "label_distribution": {
+    "safe": 25000,
+    "prompt_injection": 130,
+    "jailbreak": 134
+  },
+  "source_distribution": {
+    "anthropic_hh_rlhf": 25000,
+    "synthetic_injection_persona_adoption": 30,
+    "synthetic_injection_direct_override": 20,
+    "synthetic_injection_system_override": 20,
+    "synthetic_injection_encoding_evasion": 20,
+    "synthetic_injection_context_manipulation": 20,
+    "synthetic_injection_jailbreak_patterns": 20,
+    "synthetic_jailbreak_character_roleplay": 20,
+    "synthetic_jailbreak_technical_bypass": 20,
+    "synthetic_jailbreak_adversarial_framing": 20,
+    "synthetic_jailbreak_dan_variants": 19,
+    "synthetic_jailbreak_hypothetical_scenarios": 19,
+    "synthetic_jailbreak_multi_turn_escalation": 19,
+    "synthetic_jailbreak_token_smuggling": 17
+  },
+  "avg_text_length": 340.9091196960101,
+  "median_text_length": 274.0,
+  "created_at": "2026-07-22T20:03:12.553262",
+  "sha256": "4ad202ddf18cf9d929af5292e02acb0aafca875f0f6f02f0e0fc9093b409c420"
+}

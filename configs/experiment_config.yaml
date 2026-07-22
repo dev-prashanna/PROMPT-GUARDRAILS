@@ -1,0 +1,169 @@
+experiment:
+  name: "stage1_baseline"
+  description: "Stage 1 baseline experiments for data collection and metric acquisition"
+  seed: 42
+  num_runs: 3
+  seeds: [42, 123, 456]
+
+  # RTX 4060 (8GB VRAM) optimizations
+  gpu_optimization:
+    max_batch_size: 8
+    gradient_accumulation_steps: 8
+    effective_batch_size: 64
+    max_sequence_length: 256
+    use_gradient_checkpointing: true
+    mixed_precision: "fp16"
+
+  data:
+    sources:
+      - name: "necent/llm-jailbreak-prompt-injection-dataset"
+        type: "huggingface"
+        role: "primary"
+      - name: "protectai/restrictedresponses"
+        type: "huggingface"
+        role: "augmentation"
+      - name: "Anthropic/hh-rlhf"
+        type: "huggingface"
+        subset: "harmless-base"
+        role: "safe_balancing"
+    evaluation_sources:
+      - name: "CenterForAISafety/HarmBench"
+        type: "huggingface"
+        role: "adversarial_evaluation"
+    version: "v1.0"
+    split_ratios:
+      train: 0.8
+      val: 0.1
+      test: 0.1
+    deduplication: true
+    min_quality_score: 0.8
+    preprocessing:
+      max_length: 256
+      min_token_length: 5
+      max_token_length: 250
+      strip_whitespace: true
+      lowercase: false
+
+  model:
+    architectures:
+      - name: "microsoft/deberta-v3-base"
+        type: "encoder"
+        params: "86M"
+        role: "primary"
+    num_labels: 3
+    peft:
+      method: "lora"
+      rank: [4, 8, 16, 32]
+      alpha: [16, 32, 64]
+      target_modules: ["query_proj", "value_proj"]
+      dropout: [0.05, 0.1, 0.2]
+      bias: "none"
+      task_type: "SEQ_CLS"
+
+  training:
+    hyperparameters:
+      learning_rate: [1e-5, 2e-5, 5e-5]
+      weight_decay: [0.01, 0.1]
+      batch_size: [4, 8]
+      gradient_accumulation_steps: [4, 8, 16]
+      warmup_ratio: [0.05, 0.1]
+      lr_scheduler: ["cosine", "linear"]
+    training_loop:
+      num_train_epochs: 10
+      fp16: false
+      bf16: true
+      gradient_checkpointing: true
+    early_stopping:
+      enabled: true
+      patience: 3
+      min_delta: 0.001
+      monitor: "macro_f1"
+      mode: "max"
+    checkpointing:
+      save_strategy: "epoch"
+      save_total_limit: 3
+      load_best_model_at_end: true
+      metric_for_best_model: "macro_f1"
+    loss_functions:
+      - name: "weighted_cross_entropy"
+        default: true
+      - name: "focal_loss"
+        gamma: 2.0
+      - name: "label_smoothing"
+        smoothing: 0.1
+
+  evaluation:
+    metrics:
+      - "macro_f1"
+      - "weighted_f1"
+      - "accuracy"
+      - "auc_roc"
+      - "per_class_precision"
+      - "per_class_recall"
+      - "per_class_f1"
+      - "false_positive_rate"
+      - "false_negative_rate"
+      - "confusion_matrix"
+    statistical:
+      confidence_level: 0.95
+      bootstrap_iterations: 1000
+      significance_test: "paired_t_test"
+      multiple_comparison_correction: "bonferroni"
+    cross_validation:
+      enabled: true
+      folds: 5
+      strategy: "stratified"
+    ood_evaluation:
+      enabled: true
+      strategy: "leave_one_source_out"
+    adversarial_testing:
+      enabled: true
+      attack_types:
+        - "keyword_substitution"
+        - "paraphrase_evasion"
+        - "encoding_attack"
+        - "role_playing"
+        - "multi_language"
+
+  experiments:
+    E1_full_model:
+      description: "Full fine-tuning baseline"
+      model: "microsoft/deberta-v3-base"
+      peft_enabled: false
+      priority: "high"
+    E2_lora_rank_sweep:
+      description: "LoRA rank ablation"
+      model: "microsoft/deberta-v3-base"
+      peft_enabled: true
+      sweep: "rank"
+      values: [4, 8, 16, 32]
+      priority: "high"
+    E3_data_source_ablation:
+      description: "Remove one data source at a time"
+      ablation: "data_source"
+      priority: "high"
+    E4_augmentation_ablation:
+      description: "Disable each augmentation technique"
+      ablation: "augmentation"
+      priority: "medium"
+    E5_loss_function:
+      description: "Compare loss functions"
+      ablation: "loss_function"
+      priority: "medium"
+    E7_adversarial_robustness:
+      description: "Test against curated adversarial sets"
+      evaluation_only: true
+      priority: "high"
+    E8_ood_generalization:
+      description: "Leave-one-source-out evaluation"
+      evaluation_only: true
+      priority: "high"
+
+  tracking:
+    backend: "local"
+    log_dir: "experiments/"
+    save_predictions: true
+    save_attention_weights: false
+    save_confusion_matrix: true
+    save_classification_report: true
+    dashboard_enabled: true

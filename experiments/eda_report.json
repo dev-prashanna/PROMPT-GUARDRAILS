@@ -1,0 +1,302 @@
+{
+  "overview": {
+    "total_samples": 25264,
+    "num_labels": 3,
+    "num_sources": 14,
+    "avg_text_length_chars": 340.9091196960101,
+    "median_text_length_chars": 274.0,
+    "std_text_length_chars": 233.05488562772416,
+    "min_text_length": 16,
+    "max_text_length": 999
+  },
+  "label_distribution": {
+    "safe": {
+      "count": 25000,
+      "percentage": 98.96
+    },
+    "prompt_injection": {
+      "count": 130,
+      "percentage": 0.51
+    },
+    "jailbreak": {
+      "count": 134,
+      "percentage": 0.53
+    },
+    "skew_ratio": 192.30769230769232,
+    "is_balanced": "False"
+  },
+  "text_length": {
+    "mean": 340.9091196960101,
+    "median": 274.0,
+    "std": 233.05488562772416,
+    "min": 16,
+    "max": 999,
+    "q25": 152.0,
+    "q75": 483.0,
+    "q95": 824.0,
+    "mean_safe": 343.8876,
+    "median_safe": 277.0,
+    "mean_prompt_injection": 52.73076923076923,
+    "median_prompt_injection": 55.0,
+    "mean_jailbreak": 64.79850746268657,
+    "median_jailbreak": 64.0
+  },
+  "vocabulary": {
+    "total_words": 1514475,
+    "unique_words": 81651,
+    "vocabulary_richness": 0.05391373248155301,
+    "top_30_words": {
+      "the": 57079,
+      "to": 49446,
+      "a": 45954,
+      "and": 37994,
+      "you": 35413,
+      "of": 31507,
+      "i": 25742,
+      "assistant:": 25050,
+      "is": 21845,
+      "in": 21626,
+      "can": 18245,
+      "that": 16480,
+      "are": 16447,
+      "for": 15988,
+      "or": 12578,
+      "what": 12030,
+      "it": 11421,
+      "do": 11013,
+      "with": 9509,
+      "be": 9391,
+      "how": 9379,
+      "your": 8950,
+      "some": 8518,
+      "on": 8307,
+      "have": 8272,
+      "about": 7201,
+      "if": 7128,
+      "as": 6865,
+      "but": 6755,
+      "this": 6450
+    },
+    "unique_words_safe": 81512,
+    "unique_words_prompt_injection": 319,
+    "unique_words_jailbreak": 492
+  },
+  "source_analysis": {
+    "anthropic_hh_rlhf": {
+      "total": 25000,
+      "label_distribution": {
+        "safe": 25000
+      },
+      "avg_text_length": 343.8876
+    },
+    "synthetic_injection_direct_override": {
+      "total": 20,
+      "label_distribution": {
+        "prompt_injection": 20
+      },
+      "avg_text_length": 62.95
+    },
+    "synthetic_injection_persona_adoption": {
+      "total": 30,
+      "label_distribution": {
+        "prompt_injection": 30
+      },
+      "avg_text_length": 54.56666666666667
+    },
+    "synthetic_injection_system_override": {
+      "total": 20,
+      "label_distribution": {
+        "prompt_injection": 20
+      },
+      "avg_text_length": 62.15
+    },
+    "synthetic_injection_encoding_evasion": {
+      "total": 20,
+      "label_distribution": {
+        "prompt_injection": 20
+      },
+      "avg_text_length": 31.0
+    },
+    "synthetic_injection_context_manipulation": {
+      "total": 20,
+      "label_distribution": {
+        "prompt_injection": 20
+      },
+      "avg_text_length": 62.15
+    },
+    "synthetic_injection_jailbreak_patterns": {
+      "total": 20,
+      "label_distribution": {
+        "prompt_injection": 20
+      },
+      "avg_text_length": 42.65
+    },
+    "synthetic_jailbreak_dan_variants": {
+      "total": 19,
+      "label_distribution": {
+        "jailbreak": 19
+      },
+      "avg_text_length": 57.68421052631579
+    },
+    "synthetic_jailbreak_character_roleplay": {
+      "total": 20,
+      "label_distribution": {
+        "jailbreak": 20
+      },
+      "avg_text_length": 76.85
+    },
+    "synthetic_jailbreak_hypothetical_scenarios": {
+      "total": 19,
+      "label_distribution": {
+        "jailbreak": 19
+      },
+      "avg_text_length": 68.0
+    },
+    "synthetic_jailbreak_technical_bypass": {
+      "total": 20,
+      "label_distribution": {
+        "jailbreak": 20
+      },
+      "avg_text_length": 62.6
+    },
+    "synthetic_jailbreak_multi_turn_escalation": {
+      "total": 19,
+      "label_distribution": {
+        "jailbreak": 19
+      },
+      "avg_text_length": 59.0
+    },
+    "synthetic_jailbreak_token_smuggling": {
+      "total": 17,
+      "label_distribution": {
+        "jailbreak": 17
+      },
+      "avg_text_length": 65.94117647058823
+    },
+    "synthetic_jailbreak_adversarial_framing": {
+      "total": 20,
+      "label_distribution": {
+        "jailbreak": 20
+      },
+      "avg_text_length": 63.2
+    }
+  },
+  "quality": {
+    "null_text": 0,
+    "empty_text": 0,
+    "duplicates": 0,
+    "very_short": 0,
+    "very_long": 0,
+    "quality_score": 1.0
+  },
+  "pattern_analysis": {
+    "safe": {
+      "injection_keyword_hits": 827,
+      "jailbreak_keyword_hits": 677,
+      "avg_words": 60.48408
+    },
+    "prompt_injection": {
+      "injection_keyword_hits": 74,
+      "jailbreak_keyword_hits": 17,
+      "avg_words": 7.584615384615384
+    },
+    "jailbreak": {
+      "injection_keyword_hits": 59,
+      "jailbreak_keyword_hits": 37,
+      "avg_words": 10.350746268656716
+    }
+  },
+  "cross_source_overlap": {
+    "anthropic_hh_rlhf <-> synthetic_injection_direct_override": 0,
+    "anthropic_hh_rlhf <-> synthetic_injection_persona_adoption": 0,
+    "anthropic_hh_rlhf <-> synthetic_injection_system_override": 0,
+    "anthropic_hh_rlhf <-> synthetic_injection_encoding_evasion": 0,
+    "anthropic_hh_rlhf <-> synthetic_injection_context_manipulation": 0,
+    "anthropic_hh_rlhf <-> synthetic_injection_jailbreak_patterns": 0,
+    "anthropic_hh_rlhf <-> synthetic_jailbreak_dan_variants": 0,
+    "anthropic_hh_rlhf <-> synthetic_jailbreak_character_roleplay": 0,
+    "anthropic_hh_rlhf <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "anthropic_hh_rlhf <-> synthetic_jailbreak_technical_bypass": 0,
+    "anthropic_hh_rlhf <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "anthropic_hh_rlhf <-> synthetic_jailbreak_token_smuggling": 0,
+    "anthropic_hh_rlhf <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_injection_direct_override <-> synthetic_injection_persona_adoption": 0,
+    "synthetic_injection_direct_override <-> synthetic_injection_system_override": 0,
+    "synthetic_injection_direct_override <-> synthetic_injection_encoding_evasion": 0,
+    "synthetic_injection_direct_override <-> synthetic_injection_context_manipulation": 0,
+    "synthetic_injection_direct_override <-> synthetic_injection_jailbreak_patterns": 0,
+    "synthetic_injection_direct_override <-> synthetic_jailbreak_dan_variants": 0,
+    "synthetic_injection_direct_override <-> synthetic_jailbreak_character_roleplay": 0,
+    "synthetic_injection_direct_override <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_injection_direct_override <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_injection_direct_override <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_injection_direct_override <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_injection_direct_override <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_injection_system_override": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_injection_encoding_evasion": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_injection_context_manipulation": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_injection_jailbreak_patterns": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_jailbreak_dan_variants": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_jailbreak_character_roleplay": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_injection_persona_adoption <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_injection_system_override <-> synthetic_injection_encoding_evasion": 0,
+    "synthetic_injection_system_override <-> synthetic_injection_context_manipulation": 0,
+    "synthetic_injection_system_override <-> synthetic_injection_jailbreak_patterns": 0,
+    "synthetic_injection_system_override <-> synthetic_jailbreak_dan_variants": 0,
+    "synthetic_injection_system_override <-> synthetic_jailbreak_character_roleplay": 0,
+    "synthetic_injection_system_override <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_injection_system_override <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_injection_system_override <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_injection_system_override <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_injection_system_override <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_injection_context_manipulation": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_injection_jailbreak_patterns": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_jailbreak_dan_variants": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_jailbreak_character_roleplay": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_injection_encoding_evasion <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_injection_jailbreak_patterns": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_jailbreak_dan_variants": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_jailbreak_character_roleplay": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_injection_context_manipulation <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_injection_jailbreak_patterns <-> synthetic_jailbreak_dan_variants": 0,
+    "synthetic_injection_jailbreak_patterns <-> synthetic_jailbreak_character_roleplay": 0,
+    "synthetic_injection_jailbreak_patterns <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_injection_jailbreak_patterns <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_injection_jailbreak_patterns <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_injection_jailbreak_patterns <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_injection_jailbreak_patterns <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_jailbreak_dan_variants <-> synthetic_jailbreak_character_roleplay": 0,
+    "synthetic_jailbreak_dan_variants <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_jailbreak_dan_variants <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_jailbreak_dan_variants <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_jailbreak_dan_variants <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_jailbreak_dan_variants <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_jailbreak_character_roleplay <-> synthetic_jailbreak_hypothetical_scenarios": 0,
+    "synthetic_jailbreak_character_roleplay <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_jailbreak_character_roleplay <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_jailbreak_character_roleplay <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_jailbreak_character_roleplay <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_jailbreak_hypothetical_scenarios <-> synthetic_jailbreak_technical_bypass": 0,
+    "synthetic_jailbreak_hypothetical_scenarios <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_jailbreak_hypothetical_scenarios <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_jailbreak_hypothetical_scenarios <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_jailbreak_technical_bypass <-> synthetic_jailbreak_multi_turn_escalation": 0,
+    "synthetic_jailbreak_technical_bypass <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_jailbreak_technical_bypass <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_jailbreak_multi_turn_escalation <-> synthetic_jailbreak_token_smuggling": 0,
+    "synthetic_jailbreak_multi_turn_escalation <-> synthetic_jailbreak_adversarial_framing": 0,
+    "synthetic_jailbreak_token_smuggling <-> synthetic_jailbreak_adversarial_framing": 0
+  }
+}

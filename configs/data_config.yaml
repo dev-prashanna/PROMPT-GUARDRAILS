@@ -1,0 +1,166 @@
+data:
+  sources:
+    - name: "necent/llm-jailbreak-prompt-injection-dataset"
+      type: "huggingface"
+      split_mapping:
+        train: "train"
+        validation: "validation"
+        test: "test"
+    - name: "protectai/restrictedresponses"
+      type: "huggingface"
+      split_mapping:
+        train: "train"
+    - name: "Anthropic/hh-rlhf"
+      type: "huggingface"
+      subset: "harmless-base"
+      split_mapping:
+        train: "train"
+
+  labels:
+    safe: 0
+    prompt_injection: 1
+    jailbreak: 2
+  num_classes: 3
+
+  preprocessing:
+    max_length: 512
+    tokenizer: "microsoft/deberta-v3-base"
+    lowercase: false
+    strip_whitespace: true
+    deduplication: true
+    min_token_length: 5
+    max_token_length: 500
+
+  class_balancing:
+    strategy: "weighted_cross_entropy"
+    compute_weights_from: "train_split"
+    weight_scheme: "inverse_frequency"
+    cap_weight_ratio: 10.0
+    use_smote: false
+    smote_k_neighbors: 5
+
+  splits:
+    train_ratio: 0.8
+    val_ratio: 0.1
+    test_ratio: 0.1
+    stratify_by: "label"
+    random_seed: 42
+
+  augmentation:
+    enabled: true
+    techniques:
+      - name: "back_translation"
+        enabled: false
+        languages: ["de", "fr"]
+      - name: "synonym_replacement"
+        enabled: true
+        probability: 0.1
+        max_replacements: 2
+      - name: "random_insertion"
+        enabled: false
+        probability: 0.05
+    target_minority_ratio: 0.4
+
+  output:
+    processed_dir: "data/processed"
+    splits_dir: "data/splits"
+    metadata_dir: "data/metadata"
+    format: "parquet"
+    save_tokenized: true
+
+# Stage 3: Multi-Source Data Aggregation for Class Imbalance Mitigation
+stage3:
+  sources:
+    # Safe instruction-following datasets
+    - name: "Anthropic/hh-rlhf"
+      type: "huggingface"
+      split: "train"
+      text_column: "chosen"
+      label_strategy: "inference"
+      max_samples: 15000
+      description: "Anthropic HH-RLHF safe responses (preference pairs)"
+
+    - name: "Open-Orca/OpenOrca"
+      type: "huggingface"
+      split: "train"
+      text_column: "question"
+      label_strategy: "fixed"
+      fixed_label: 0
+      max_samples: 15000
+      description: "Large-scale instruction-following dataset"
+
+    - name: "tatsu-lab/alpaca"
+      type: "huggingface"
+      split: "train"
+      text_column: "instruction"
+      label_strategy: "fixed"
+      fixed_label: 0
+      max_samples: 15000
+      description: "Stanford Alpaca instruction dataset"
+
+    # Unsafe proxy datasets (toxicity detection)
+    - name: "lmsys/toxic-chat"
+      type: "huggingface"
+      split: "train"
+      subset: "toxicchat0124"
+      text_column: "user_input"
+      label_column: "toxicity"
+      label_strategy: "toxic_threshold"
+      threshold: 0.5
+      max_samples: 15000
+      description: "LMSYS ToxicChat with human annotations"
+
+    - name: "ucberkeley-dlab/measuring-hate-speech"
+      type: "huggingface"
+      split: "train"
+      text_column: "text"
+      label_column: "hate_speech_score"
+      label_strategy: "toxic_threshold"
+      threshold: 0.0
+      max_samples: 10000
+      description: "Hate speech measurement dataset"
+
+    # Local synthetic data (existing)
+    - name: "local_synthetic_data"
+      type: "local"
+      path: "data/raw/raw_merged.parquet"
+      text_column: "text"
+      label_column: "label"
+      label_strategy: "preserve"
+      description: "Existing synthetic injection/jailbreak corpus"
+
+  class_balancing:
+    strategy: "hybrid"
+    target_ratio: 0.5
+    target_minority_ratio: 0.5
+    oversample_factor: 3
+    use_focal_loss: true
+    focal_gamma: 2.0
+    focal_alpha: 0.25
+
+  cleaning:
+    min_token_length: 5
+    max_token_length: 512
+    min_text_length: 10
+    max_special_char_ratio: 0.5
+    near_duplicate_detection: true
+    near_duplicate_threshold: 0.85
+    outlier_z_threshold: 3.0
+    remove_html: true
+    replace_urls: true
+    normalize_whitespace: true
+
+  splits:
+    train_ratio: 0.8
+    val_ratio: 0.1
+    test_ratio: 0.1
+    random_seed: 42
+
+  output:
+    processed_dir: "data/stage3/processed"
+    splits_dir: "data/stage3/splits"
+    sft_dir: "data/stage3/sft"
+    metadata_dir: "data/stage3/metadata"
+    format: "parquet"
+    save_sft_format: true
+    save_tokenized: false

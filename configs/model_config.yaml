@@ -1,0 +1,43 @@
+model:
+  base_model: "microsoft/deberta-v3-base"
+  num_labels: 3
+  problem_type: "single_label_classification"
+  max_position_embeddings: 512
+
+  classification_head:
+    dropout: 0.1
+    hidden_size: 768
+    use_auxiliary_loss: false
+    auxiliary_loss_weight: 0.1
+
+  peft:
+    method: "lora"
+    enabled: true
+    target_modules:
+      - "query_proj"
+      - "value_proj"
+    rank: 16
+    alpha: 32
+    dropout: 0.1
+    bias: "none"
+    task_type: "SEQ_CLS"
+    merge_after_training: true
+
+  quantization:
+    enabled: false
+    bits: 4
+    quant_type: "nf4"
+    compute_dtype: "float16"
+
+  tokenizer:
+    name: "microsoft/deberta-v3-base"
+    max_length: 256
+    padding: "max_length"
+    truncation: true
+    return_tensors: "pt"
+
+  # RTX 4060 (8GB VRAM) optimized settings
+  device:
+    auto_detect: true
+    fallback: "cuda"
+    max_batch_size_estimate: "auto"

@@ -1,0 +1,215 @@
+{
+  "experiment_id": "stage1_baseline_20260722_192028",
+  "experiment_name": "stage1_baseline",
+  "stage": "Stage 1 - Baseline Establishment",
+  "status": "completed",
+  "created_at": "2026-07-22T19:20:28+05:45",
+  "completed_at": "2026-07-22T19:24:00+05:45",
+  "config_hash": "923913d0d6fa",
+  "model": {
+    "architecture": "microsoft/deberta-v3-base",
+    "total_parameters": 184424451,
+    "num_labels": 3,
+    "label_names": {
+      "0": "safe",
+      "1": "prompt_injection",
+      "2": "jailbreak"
+    }
+  },
+  "dataset": {
+    "source": "synthetic",
+    "total_samples": 294,
+    "train_samples": 234,
+    "val_samples": 30,
+    "test_samples": 30,
+    "label_distribution": {
+      "safe": 192,
+      "prompt_injection": 51,
+      "jailbreak": 51
+    },
+    "max_sequence_length": 256,
+    "preprocessing": {
+      "tokenization": "microsoft/deberta-v3-base tokenizer",
+      "padding": "max_length",
+      "truncation": true
+    }
+  },
+  "training": {
+    "epochs": 10,
+    "batch_size": 8,
+    "learning_rate": 2e-05,
+    "weight_decay": 0.01,
+    "warmup_steps": 30,
+    "warmup_ratio": 0.1,
+    "lr_scheduler": "linear",
+    "optimizer": "AdamW",
+    "max_grad_norm": 1.0,
+    "class_weights": [
+      0.513,
+      1.902,
+      1.902
+    ],
+    "loss_function": "weighted_cross_entropy",
+    "device": "cuda",
+    "mixed_precision": "fp32 (bf16 disabled for stability)"
+  },
+  "training_log": [
+    {
+      "epoch": 1,
+      "train_loss": 1.1006802280743917,
+      "val_loss": 1.0428884426752727,
+      "macro_f1": 0.5555555555555555,
+      "accuracy": 0.8333333333333334
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.766239415605863,
+      "val_loss": 0.24356487890084585,
+      "macro_f1": 0.8611111111111112,
+      "accuracy": 0.9333333333333333
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.3699390605092049,
+      "val_loss": 0.12484166969855627,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.20561043980220953,
+      "val_loss": 0.10691817452510198,
+      "macro_f1": 0.8666666666666667,
+      "accuracy": 0.9333333333333333
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.14209387856535613,
+      "val_loss": 0.1667124138834576,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.13523203980488083,
+      "val_loss": 0.053681511292234065,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.0751656176832815,
+      "val_loss": 0.05772794547180335,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0906135537661612,
+      "val_loss": 0.03308297331289699,
+      "macro_f1": 0.9326599326599326,
+      "accuracy": 0.9666666666666667
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.06908227796666325,
+      "val_loss": 0.016613627100984255,
+      "macro_f1": 1.0,
+      "accuracy": 1.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.08513542033421496,
+      "val_loss": 0.014612913690507412,
+      "macro_f1": 1.0,
+      "accuracy": 1.0
+    }
+  ],
+  "best_checkpoint": {
+    "epoch": 9,
+    "val_loss": 0.0166,
+    "val_macro_f1": 1.0,
+    "val_accuracy": 1.0
+  },
+  "test_results": {
+    "macro_f1": 0.8666666666666667,
+    "weighted_f1": 0.9333333333333333,
+    "accuracy": 0.9333333333333333,
+    "eval_loss": 0.4165991166606545,
+    "macro_precision": 0.8666666666666667,
+    "macro_recall": 0.8666666666666667,
+    "per_class": {
+      "safe": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 20
+      },
+      "prompt_injection": {
+        "precision": 0.8,
+        "recall": 0.8,
+        "f1": 0.8,
+        "support": 5
+      },
+      "jailbreak": {
+        "precision": 0.8,
+        "recall": 0.8,
+        "f1": 0.8,
+        "support": 5
+      }
+    },
+    "confusion_matrix": {
+      "safe": {
+        "safe": 20,
+        "prompt_injection": 0,
+        "jailbreak": 0
+      },
+      "prompt_injection": {
+        "safe": 0,
+        "prompt_injection": 4,
+        "jailbreak": 1
+      },
+      "jailbreak": {
+        "safe": 0,
+        "prompt_injection": 1,
+        "jailbreak": 4
+      }
+    }
+  },
+  "convergence_analysis": {
+    "initial_train_loss": 1.1006802280743917,
+    "final_train_loss": 0.08513542033421496,
+    "loss_reduction_pct": 92.26519945005673,
+    "best_val_loss": 0.014612913690507412,
+    "best_val_f1": 1.0,
+    "overfitting_detected": false
+  },
+  "latency_profile": {
+    "device": "cuda",
+    "note": "Latency measured on synthetic dataset, batch_size=8, max_length=256"
+  },
+  "artifacts": {
+    "model_checkpoint": "checkpoints/best/",
+    "results_json": "experiments/stage1_results.json",
+    "experiment_db": "experiments/tracker.db"
+  },
+  "exit_criteria_check": {
+    "macro_f1_ge_0.92": false,
+    "f1_std_le_0.02": "N/A (single run)",
+    "fpr_le_5pct": true,
+    "fnr_le_5pct": true,
+    "latency_p99_le_50ms": "N/A (synthetic data)",
+    "ood_f1_ge_0.80": "N/A (no OOD test)",
+    "adversarial_acc_ge_0.85": "N/A (no adversarial test)"
+  },
+  "notes": [
+    "Trained on synthetic dataset (294 samples) - not representative of real-world distribution",
+    "Primary gated dataset (necent/llm-jailbreak) requires HuggingFace access approval",
+    "Full fine-tuning used (not LoRA) for this baseline run",
+    "bf16 caused NaN loss on this hardware - switched to fp32",
+    "Model shows strong convergence (loss 1.10 -> 0.09 over 10 epochs)",
+    "Perfect safe detection (100% precision/recall) - no false positives",
+    "2 misclassifications between injection and jailbreak (expected - similar patterns)",
+    "Next steps: acquire gated dataset, run LoRA experiments, add adversarial testing"
+  ]
+}
