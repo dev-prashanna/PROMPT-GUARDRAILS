@@ -550,35 +550,55 @@ class Stage3DataPipeline:
         return pd.concat(frames, ignore_index=True)
 
     def _hybrid_balancing(self, df: pd.DataFrame, target_ratio: float) -> pd.DataFrame:
-        """Hybrid approach: oversample minority + undersample majority."""
-        label_counts = df["label"].value_counts()
-        max_count = label_counts.max()
-        min_count = label_counts.min()
+        """Hybrid approach: cap majority + oversample smallest minority.
 
-        # Target: majority class downsized, minority class upsized
-        target_max = int(max_count * 0.3)  # Cap majority at 30% of original
-        target_min = int(max_count * target_ratio)  # Minority at target_ratio of original max
+        Strategy:
+          1. Identify the majority class (highest count) and all minority classes.
+          2. Cap the majority class at ``target_ratio * total_minority_count``.
+          3. Oversample the smallest minority class up to the largest minority count.
+          4. Leave other minorities at their natural size.
+
+        This preserves all naturally-occurring minority diversity while keeping
+        the majority class proportional to the combined unsafe signal.
+        """
+        label_counts = df["label"].value_counts()
+        majority_label = label_counts.idxmax()
+        majority_count = label_counts[majority_label]
+
+        minority_counts = {
+            l: c for l, c in label_counts.items() if l != majority_label
+        }
+        minority_total = sum(minority_counts.values())
+        max_minority = max(minority_counts.values()) if minority_counts else 0
+
+        # Majority cap: target_ratio times total minority samples
+        majority_cap = int(minority_total * target_ratio)
+        majority_cap = max(majority_cap, max_minority)
 
         frames = []
         for label, count in label_counts.items():
             subset = df[df["label"] == label]
-            if count < target_min:
-                needed = target_min - count
-                oversampled = subset.sample(n=needed, replace=True, random_state=42)
-                oversampled["source"] = oversampled["source"] + "_oversampled"
+            if label == majority_label:
+                if count > majority_cap:
+                    subset = subset.sample(n=majority_cap, random_state=42)
+                    logger.info(
+                        "Hybrid: Undersampled majority label %d: %d -> %d",
+                        label, count, majority_cap,
+                    )
                 frames.append(subset)
-                frames.append(oversampled)
-                logger.info(
-                    "Hybrid: Oversampled label %d: %d -> %d", label, count, target_min
-                )
-            elif count > target_max:
-                subset = subset.sample(n=target_max, random_state=42)
-                frames.append(subset)
-                logger.info(
-                    "Hybrid: Undersampled label %d: %d -> %d", label, count, target_max
-                )
             else:
-                frames.append(subset)
+                if count < max_minority:
+                    needed = max_minority - count
+                    oversampled = subset.sample(n=needed, replace=True, random_state=42)
+                    oversampled["source"] = oversampled["source"] + "_oversampled"
+                    frames.append(subset)
+                    frames.append(oversampled)
+                    logger.info(
+                        "Hybrid: Oversampled label %d: %d -> %d",
+                        label, count, max_minority,
+                    )
+                else:
+                    frames.append(subset)
 
         return pd.concat(frames, ignore_index=True)
 
@@ -735,10 +755,22 @@ def get_default_stage3_config() -> dict[str, Any]:
                     "name": "lmsys/toxic-chat",
                     "type": "huggingface",
                     "split": "train",
+                    "subset": "toxicchat0124",
                     "text_column": "user_input",
+                    "label_column": "toxicity",
                     "label_strategy": "toxic_threshold",
                     "threshold": 0.5,
                     "max_samples": 15000,
+                },
+                {
+                    "name": "ucberkeley-dlab/measuring-hate-speech",
+                    "type": "huggingface",
+                    "split": "train",
+                    "text_column": "text",
+                    "label_column": "hate_speech_score",
+                    "label_strategy": "toxic_threshold",
+                    "threshold": 0.0,
+                    "max_samples": 10000,
                 },
                 {
                     "name": "Open-Orca/OpenOrca",
@@ -768,8 +800,8 @@ def get_default_stage3_config() -> dict[str, Any]:
             ],
             "class_balancing": {
                 "strategy": "hybrid",
-                "target_ratio": 0.3,
-                "target_minority_ratio": 0.3,
+                "target_ratio": 5.0,
+                "target_minority_ratio": 0.5,
                 "oversample_factor": 3,
             },
             "cleaning": {

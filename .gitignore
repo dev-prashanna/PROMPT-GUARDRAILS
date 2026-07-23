@@ -34,8 +34,15 @@ data/splits/
 !data/splits/.gitkeep
 
 checkpoints/
+!checkpoints/.gitkeep
 logs/
 deployment/merged_model/
+
+models/*/optimizer.pt
+models/*/scheduler.pt
+models/*/rng_state.pth
+models/*/training_args.bin
+models/*/trainer_state.json
 
 *.parquet
 *.arrow

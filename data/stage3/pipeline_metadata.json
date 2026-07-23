@@ -2,60 +2,62 @@
   "pipeline": "stage3_multi_source_aggregation",
   "stats": {
     "aggregation": {
-      "total_samples": 44915,
+      "total_samples": 59827,
       "label_distribution": {
-        "0": 44764,
-        "2": 116,
+        "0": 55688,
+        "2": 4104,
         "1": 35
       },
       "source_distribution": {
         "Anthropic/hh-rlhf": 15000,
-        "tatsu-lab/alpaca": 15000,
+        "tatsu-lab/alpaca": 14998,
         "Open-Orca/OpenOrca": 14623,
+        "ucberkeley-dlab/measuring-hate-speech": 9927,
+        "lmsys/toxic-chat": 4987,
         "local_injection_data": 292
       }
     },
     "cleaning": {
-      "before": 44915,
-      "after": 41381,
-      "removed": 3534
+      "before": 59827,
+      "after": 55197,
+      "removed": 4630
     },
     "balancing": {
       "before": {
-        "0": 41246,
-        "2": 104,
+        "0": 51304,
+        "2": 3862,
         "1": 31
       },
       "after": {
-        "0": 346,
-        "2": 104,
-        "1": 31
+        "0": 19465,
+        "1": 3862,
+        "2": 3862
       },
       "strategy": "hybrid"
     },
     "final": {
       "train": {
-        "size": 384,
+        "size": 21751,
         "label_distribution": {
-          "0": 276,
-          "2": 83,
-          "1": 25
+          "0": 15571,
+          "1": 3090,
+          "2": 3090
         }
       },
       "val": {
-        "size": 48,
+        "size": 2719,
         "label_distribution": {
-          "0": 35,
-          "2": 10,
-          "1": 3
+          "0": 1947,
+          "1": 386,
+          "2": 386
         }
       },
       "test": {
-        "size": 49,
+        "size": 2719,
         "label_distribution": {
-          "0": 35,
-          "2": 11,
-          "1": 3
+          "0": 1947,
+          "1": 386,
+          "2": 386
         }
       }
     }
@@ -74,10 +76,22 @@
         "name": "lmsys/toxic-chat",
         "type": "huggingface",
         "split": "train",
+        "subset": "toxicchat0124",
         "text_column": "user_input",
+        "label_column": "toxicity",
         "label_strategy": "toxic_threshold",
         "threshold": 0.5,
         "max_samples": 15000
+      },
+      {
+        "name": "ucberkeley-dlab/measuring-hate-speech",
+        "type": "huggingface",
+        "split": "train",
+        "text_column": "text",
+        "label_column": "hate_speech_score",
+        "label_strategy": "toxic_threshold",
+        "threshold": 0.0,
+        "max_samples": 10000
       },
       {
         "name": "Open-Orca/OpenOrca",
@@ -107,8 +121,8 @@
     ],
     "class_balancing": {
       "strategy": "hybrid",
-      "target_ratio": 0.3,
-      "target_minority_ratio": 0.3,
+      "target_ratio": 5.0,
+      "target_minority_ratio": 0.5,
       "oversample_factor": 3
     },
     "cleaning": {
@@ -137,5 +151,5 @@
     "1": "prompt_injection",
     "2": "jailbreak"
   },
-  "sha256": "3f5fd86d18501a76961923f9afc97efaeda7bca169214965700a9b0b2c117bc3"
+  "sha256": "52ee5626e09fd431d8adbd980e6ec7805c24263212ac2207bb54d1d39935ca16"
 }

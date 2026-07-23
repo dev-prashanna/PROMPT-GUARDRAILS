@@ -1,0 +1,95 @@
+{
+  "experiment": "deberta-v3-firewall-stage1-bf16",
+  "date": "2026-07-23",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop (8GB VRAM)",
+  "framework": "PyTorch + Transformers + PEFT",
+  "model": {
+    "base": "microsoft/deberta-v3-base",
+    "total_params": 185016582,
+    "trainable_params": 592131,
+    "trainable_pct": 0.32,
+    "peft": {
+      "method": "lora",
+      "rank": 16,
+      "alpha": 32,
+      "target_modules": ["query_proj", "value_proj"],
+      "dropout": 0.1
+    }
+  },
+  "training_config": {
+    "precision": "bf16",
+    "gradient_checkpointing": true,
+    "epochs": 10,
+    "batch_size": 4,
+    "gradient_accumulation": 16,
+    "effective_batch_size": 64,
+    "learning_rate": 2e-5,
+    "lr_scheduler": "cosine",
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "max_grad_norm": 1.0,
+    "loss": "weighted_cross_entropy",
+    "label_smoothing": 0.1,
+    "class_weights": [0.4656, 2.3464, 2.3464],
+    "save_strategy": "epoch",
+    "early_stopping_patience": 3,
+    "best_metric": "macro_f1"
+  },
+  "data": {
+    "train_samples": 21751,
+    "val_samples": 2719,
+    "label_distribution": {
+      "safe": 15571,
+      "prompt_injection": 3090,
+      "jailbreak": 3090
+    },
+    "sources": [
+      "necent/llm-jailbreak-prompt-injection-dataset",
+      "protectai/restrictedresponses",
+      "Anthropic/hh-rlhf"
+    ]
+  },
+  "results": {
+    "best_epoch": 8,
+    "total_time_minutes": 228,
+    "convergence_epoch": 7,
+    "epoch_results": [
+      {"epoch": 1, "accuracy": 0.6969, "macro_f1": 0.4722, "safe_f1": 0.7901, "pi_f1": 0.6266, "jailbreak_f1": 0.0000, "loss": 19.3853},
+      {"epoch": 2, "accuracy": 0.8268, "macro_f1": 0.7893, "safe_f1": 0.8689, "pi_f1": 0.7606, "jailbreak_f1": 0.7382, "loss": null},
+      {"epoch": 3, "accuracy": 0.8768, "macro_f1": 0.8404, "safe_f1": 0.9112, "pi_f1": 0.8456, "jailbreak_f1": 0.7644, "loss": null},
+      {"epoch": 4, "accuracy": 0.8838, "macro_f1": 0.8497, "safe_f1": 0.9162, "pi_f1": 0.8664, "jailbreak_f1": 0.7664, "loss": null},
+      {"epoch": 5, "accuracy": 0.9055, "macro_f1": 0.8752, "safe_f1": 0.9329, "pi_f1": 0.9125, "jailbreak_f1": 0.7801, "loss": null},
+      {"epoch": 6, "accuracy": 0.9073, "macro_f1": 0.8788, "safe_f1": 0.9341, "pi_f1": 0.9223, "jailbreak_f1": 0.7800, "loss": null},
+      {"epoch": 7, "accuracy": 0.9180, "macro_f1": 0.8902, "safe_f1": 0.9424, "pi_f1": 0.9392, "jailbreak_f1": 0.7892, "loss": null},
+      {"epoch": 8, "accuracy": 0.9180, "macro_f1": 0.8908, "safe_f1": 0.9421, "pi_f1": 0.9426, "jailbreak_f1": 0.7878, "loss": null},
+      {"epoch": 9, "accuracy": 0.9172, "macro_f1": 0.8901, "safe_f1": 0.9415, "pi_f1": 0.9392, "jailbreak_f1": 0.7897, "loss": null},
+      {"epoch": 10, "accuracy": 0.9158, "macro_f1": 0.8885, "safe_f1": 0.9404, "pi_f1": 0.9392, "jailbreak_f1": 0.7860, "loss": 10.9797}
+    ],
+    "best_metrics": {
+      "accuracy": 0.9180,
+      "macro_f1": 0.8908,
+      "weighted_f1": 0.9202,
+      "safe_f1": 0.9424,
+      "pi_f1": 0.9426,
+      "jailbreak_f1": 0.7897
+    }
+  },
+  "comparison_with_baseline": {
+    "stage1_baseline": {
+      "macro_f1": 0.3316,
+      "pi_f1": 0.0,
+      "jailbreak_f1": 0.0
+    },
+    "bf16_improved": {
+      "macro_f1": 0.8908,
+      "pi_f1": 0.9426,
+      "jailbreak_f1": 0.7897
+    },
+    "macro_f1_improvement_pct": 168.6
+  },
+  "vram_usage": {
+    "fp32_mb": 5186,
+    "bf16_mb": 1252,
+    "reduction_pct": 75.9
+  }
+}
