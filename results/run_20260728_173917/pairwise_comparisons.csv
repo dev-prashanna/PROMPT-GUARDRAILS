@@ -1,0 +1,4 @@
+comparison,f1_diff,cohens_h,accuracy_m1,accuracy_m2,fpr_m1,fpr_m2,fnr_m1,fnr_m2,latency_diff_ms
+Llama Guard 2 vs Gemma 4 31B,0.3902,1.6939,0.5614035087719298,0,0.0,0,0.7575757575757576,0,1898.94
+Llama Guard 2 vs Mimo v2.5,0.3902,1.6939,0.5614035087719298,0,0.0,0,0.7575757575757576,0,1898.94
+Gemma 4 31B vs Mimo v2.5,0.0,0.0,0.0,0,0.0,0,0.0,0,0.0

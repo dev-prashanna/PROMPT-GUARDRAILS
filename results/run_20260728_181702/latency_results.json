@@ -1,0 +1,33 @@
+{
+  "Llama Guard 2": {
+    "1": {
+      "mean": 175.37,
+      "p50": 175.37,
+      "p95": 175.37,
+      "total_ms": 175.79,
+      "throughput_rps": 5.69,
+      "n_success": 1,
+      "n_failed": 0
+    },
+    "2": {
+      "mean": 161.83,
+      "p50": 161.83,
+      "p95": 176.12,
+      "total_ms": 178.85,
+      "throughput_rps": 11.18,
+      "n_success": 2,
+      "n_failed": 0
+    },
+    "5": {
+      "mean": 190.67,
+      "p50": 199.05,
+      "p95": 225.09,
+      "total_ms": 226.73,
+      "throughput_rps": 22.05,
+      "n_success": 5,
+      "n_failed": 0
+    }
+  },
+  "Gemma 4 31B": {},
+  "Mimo v2.5": {}
+}

@@ -1,0 +1,55 @@
+experiment:
+  name: "prompt_guardrail_comparison_v1"
+  random_seed: 42
+  num_runs: 3  # repeat each experiment for statistical robustness
+  timeout_ms: 5000
+
+datasets:
+  benign:
+    path: datasets/benign/
+    size: 10000
+  adversarial:
+    path: datasets/adversarial/
+    categories:
+      - jailbreak
+      - prompt_injection
+      - pii_extraction
+      - toxic_content
+      - indirect_injection
+      - encoding_evasion
+      - multi_turn
+
+guardrails:
+  - name: custom
+    type: local
+    adapter: guardrails/custom/adapter.py
+    health_check: true
+  - name: nemo
+    type: local
+    adapter: guardrails/nemo/adapter.py
+    health_check: true
+  - name: llama_guard
+    type: local
+    adapter: guardrails/llama_guard/adapter.py
+    health_check: true
+    model: meta-llama/Llama-Guard-3-8B
+    device: cuda
+
+concurrency_levels: [1, 5, 10, 25, 50, 100]
+
+metrics:
+  - f1_score
+  - false_positive_rate
+  - false_negative_rate
+  - auroc
+  - latency_p50
+  - latency_p95
+  - latency_p99
+  - throughput_rps
+  - memory_peak_mb
+  - cpu_utilization_pct
+
+output:
+  raw_results: results/raw/
+  processed: results/processed/
+  figures: results/figures/

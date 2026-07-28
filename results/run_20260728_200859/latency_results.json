@@ -1,0 +1,33 @@
+{
+  "Llama Guard 2": {
+    "1": {
+      "mean": 145.29,
+      "p50": 145.29,
+      "p95": 145.29,
+      "total_ms": 145.63,
+      "throughput_rps": 6.87,
+      "n_success": 1,
+      "n_failed": 0
+    },
+    "2": {
+      "mean": 165.07,
+      "p50": 165.07,
+      "p95": 180.26,
+      "total_ms": 182.86,
+      "throughput_rps": 10.94,
+      "n_success": 2,
+      "n_failed": 0
+    },
+    "5": {
+      "mean": 5313.71,
+      "p50": 5821.67,
+      "p95": 12679.97,
+      "total_ms": 14326.82,
+      "throughput_rps": 0.35,
+      "n_success": 5,
+      "n_failed": 0
+    }
+  },
+  "Llama Guard 4": {},
+  "Qwen 3.7 Flash": {}
+}

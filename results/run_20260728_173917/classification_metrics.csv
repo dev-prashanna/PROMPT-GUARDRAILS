@@ -1,0 +1,4 @@
+model,tp,tn,fp,fn,errors,precision,recall,f1,fpr,fnr,accuracy,latency_mean,latency_p50,latency_p95,latency_p99,latency_std,throughput_rps
+Llama Guard 2,16,48,0,50,1,1.0,0.2424,0.3902,0.0,0.7576,0.5614,1541.33,1898.94,3192.55,5135.12,1291.82,0.65
+Gemma 4 31B,0,0,0,0,115,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+Mimo v2.5,0,0,0,0,115,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0

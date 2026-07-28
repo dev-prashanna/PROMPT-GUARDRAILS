@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (large files - tracked separately)
+datasets/*.jsonl
+datasets/benign/*.jsonl
+datasets/adversarial/*.jsonl
+
+# Keep metadata
+!datasets/metadata.jsonl
+!datasets/generate_datasets.py
+
+# Results
+results/raw/
+results/processed/
+
+# Environment
+.env
+*.env
